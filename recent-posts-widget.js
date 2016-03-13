@@ -1,4 +1,10 @@
+var DISQUSWIDGETS;
+
 jQuery(document).ready(function($) {
+    var $rpwList = $('.rpw-list');
+    var rpwCount = $rpwList.length;
+    var done = 0;
+
     $('.rpw-list').each(function() {
         var widgetData = getWidgetData(this);
         initWidget($(this), widgetData);
@@ -21,7 +27,17 @@ jQuery(document).ready(function($) {
                 enableCarousel($widget, widgetData);
                 setupCarouselToggler($widget, widgetData)
             }
+            done += 1;
+            if (done == rpwCount) {
+                updateDisqusCount();
+            }
         });
+    }
+
+    function updateDisqusCount() {
+        if (typeof DISQUSWIDGETS != 'undefined') {
+            DISQUSWIDGETS.getCount({reset: true});
+        }
     }
 
     function ellipsis($container) {
