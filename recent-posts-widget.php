@@ -3,7 +3,7 @@
  * Plugin Name: Recent Posts Widget (async)
  * Description: Widget to show recent posts asynchronously.
  * Author: hg
- * Version: 0.2.0
+ * Version: 0.2.1
  */
 
 class RecentPostsWidget extends WP_Widget
@@ -47,7 +47,7 @@ class RecentPostsWidget extends WP_Widget
             'post_status' => 'publish',
             'orderby' => 'date',
             'order' => 'DESC',
-            'posts_per_page' => 10,
+            'posts_per_page' => $instance['post_limit'],
             'category_name' => $instance['categories']
         );
         $query = new WP_Query( $args );
