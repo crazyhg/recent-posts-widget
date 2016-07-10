@@ -3,7 +3,7 @@
  * Plugin Name: Recent Posts Widget (async)
  * Description: Widget to show recent posts asynchronously.
  * Author: hg
- * Version: 0.2.1
+ * Version: 0.3.0
  */
 
 class RecentPostsWidget extends WP_Widget
@@ -27,6 +27,7 @@ class RecentPostsWidget extends WP_Widget
             'title' => 'Recent posts',
             'categories' => '',
             'post_limit' => 10,
+            'time_limit' => 0,
             'carousel_timeout' => 10,
             'carousel_enabled' => true,
             'ajax_enabled' => true,
@@ -50,6 +51,16 @@ class RecentPostsWidget extends WP_Widget
             'posts_per_page' => $instance['post_limit'],
             'category_name' => $instance['categories']
         );
+
+        if ($instance['time_limit'] > 0) {
+            $args['date_query'] = array(
+                array(
+                    'after' => $instance['time_limit'] . ' minutes ago',
+                    'inclusive' => true
+                )
+            );
+        }
+
         $query = new WP_Query( $args );
 
         while ( $query->have_posts() ) : $query->the_post();
@@ -134,6 +145,7 @@ class RecentPostsWidget extends WP_Widget
 
         $instance['title'] = strip_tags($new_instance['title']);
         $instance['post_limit'] = (int) $new_instance['post_limit'];
+        $instance['time_limit'] = (int) $new_instance['time_limit'];
         $instance['categories'] = strip_tags($new_instance['categories']);
         $instance['carousel_timeout'] = (int) $new_instance['carousel_timeout'];
         $instance['carousel_enabled'] = (bool) $new_instance['carousel_enabled'];
@@ -164,6 +176,14 @@ class RecentPostsWidget extends WP_Widget
                name="<?= $this->get_field_name('post_limit') ?>"
                value="<?= esc_attr($post_limit) ?>"
                type="number" min="1" max="100" class="widefat"/>
+        </p>
+
+        <p>
+        <label for="<?= $this->get_field_id('time_limit') ?>"><?= 'Maximum age of a post <small>in minutes, 0 to disable</small>' ?></label>
+        <input id="<?= $this->get_field_id('time_limit') ?>"
+               name="<?= $this->get_field_name('time_limit') ?>"
+               value="<?= esc_attr($time_limit) ?>"
+               type="number" min="0" max="" class="widefat"/>
         </p>
 
         <p>
