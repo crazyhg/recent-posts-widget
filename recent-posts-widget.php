@@ -3,7 +3,7 @@
  * Plugin Name: Recent Posts Widget (async)
  * Description: Widget to show recent posts asynchronously.
  * Author: hg
- * Version: 0.3.0
+ * Version: 0.3.1
  */
 
 class RecentPostsWidget extends WP_Widget
@@ -70,7 +70,7 @@ class RecentPostsWidget extends WP_Widget
                     <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                 </div>
                 <div class="rpw-comment-count">
-                    <p class="disqus-comment-count" data-disqus-url="<?php the_guid() ?>">
+                    <p class="disqus-comment-count" data-disqus-identifier="<?php echo get_the_ID() . ' ' . get_the_guid() ?>">
                         <?php $number = get_comments_number(); printf(_n('%s Comment', '%s Comments', $number), number_format_i18n($number));?>
                     </p>
                 </div>
